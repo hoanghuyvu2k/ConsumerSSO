@@ -7,6 +7,9 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const engine = require("ejs-mate");
 const isAuthenticated = require("./isAuthenticated");
+const ssoRoute = require("./routes/sso");
+const session = require("express-session");
+
 dotenv.config();
 const app = express();
 
@@ -20,8 +23,10 @@ app.use(express.json());
 app.engine("ejs", engine);
 app.set("views", __dirname + "/views");
 app.set("view engine", "ejs");
+
 //ROUTES
-app.get("/list", (req, res, next) => {
+app.use("/simplesso", ssoRoute);
+app.get("/sso", (req, res, next) => {
   res.render("index", {
     what: `SSO-Consumer One `,
     title: "Chua dc thong qua",

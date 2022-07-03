@@ -17,5 +17,6 @@ router.post(
 );
 //SSO
 router.post("/sso", authController.ssoRequest);
+// router.post("/receiveToken", authController.receiveToken);
 
 module.exports = router;

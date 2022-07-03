@@ -4,13 +4,24 @@ const jwt = require("jsonwebtoken");
 
 let refreshTokens = [];
 const authController = {
+  receiveToken: async (req, res) => {
+    try {
+      res.cookie("user", req.body.user, {
+        httpOnly: true,
+        path: "/",
+        sameSite: "strict",
+        secure: false,
+      });
+      res.redirect("http://localhost:8001/sso");
+    } catch (error) {
+      res.status(500).json(err);
+    }
+  },
   ssoRequest: async (req, res) => {
     const redirectURL = `${req.protocol}://${req.headers?.host}${req.path}`;
-    if (req.session?.user == null) {
-      return res.redirect(
-        `http://localhost:8001/simplesso/ssoLogin?serviceURL=${redirectURL}`
-      );
-    }
+    return res.redirect(
+      `http://localhost:8001/simplesso/ssoLogin?serviceURL=${redirectURL}`
+    );
   },
   //REGISTER
   registerUser: async (req, res) => {
@@ -80,6 +91,7 @@ const authController = {
           secure: false,
         });
         const { password, ...others } = user._doc;
+        console.log(others);
         res.status(200).json({ ...others, accessToken });
       }
     } catch (err) {

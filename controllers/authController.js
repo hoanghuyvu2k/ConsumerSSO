@@ -6,15 +6,10 @@ let refreshTokens = [];
 const authController = {
   receiveToken: async (req, res) => {
     try {
-      res.cookie("user", req.body.user, {
-        httpOnly: true,
-        path: "/",
-        sameSite: "strict",
-        secure: false,
-      });
-      res.redirect("http://localhost:8001/sso");
+      console.log(req.body);
+      res.json("ok");
     } catch (error) {
-      res.status(500).json(err);
+      res.status(500).json(error);
     }
   },
   ssoRequest: async (req, res) => {
